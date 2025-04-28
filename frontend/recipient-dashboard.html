@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recipient Dashboard</title>
+  <style>
+    :root {
+      --primary-color: #e74c3c;
+      --accent-color: #c0392b;
+      --bg-color: #fff8f8;
+      --card-bg: #ffffff;
+      --text-color: #333;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background: var(--accent-color);
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .dashboard {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      width: 100%;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .profile-header h2 {
+      font-size: 22px;
+    }
+
+    .details {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .info-box {
+      background: #fef2f2;
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .label {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .value {
+      font-size: 18px;
+      color: #2c3e50;
+    }
+
+    .btns {
+      margin-top: 30px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      transition: background 0.3s ease;
+    }
+
+    .edit-btn {
+      background-color: var(--primary-color);
+    }
+
+    .edit-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .logout-btn {
+      background-color: #2c3e50;
+    }
+
+    .logout-btn:hover {
+      background-color: #1a252f;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 20px;
+    }
+
+    /* Updates Section */
+    .updates-section {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f0f3f5;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .updates-section h3 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .update-item {
+      background: #ffffff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .update-item .date {
+      font-size: 12px;
+      color: #888;
+    }
+    
+    /* Navigation buttons */
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: var(--accent-color);
+    }
+
+    .nav-btn.active {
+      background-color: var(--accent-color);
+    }
+
+    /* Badge for notification */
+    .badge {
+      background-color: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+    
+    /* Tab content */
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Messages Section */
+    .messages-section {
+      margin-top: 20px;
+    }
+
+    .message-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .message-item {
+      background: #ffffff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+    }
+
+    .message-content {
+      margin-top: 5px;
+      padding-top: 5px;
+      border-top: 1px solid #eee;
+    }
+
+    .message-time {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .compose-message {
+      margin-top: 20px;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .compose-message textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .send-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      float: right;
+    }
+
+    .send-btn:hover {
+      background-color: var(--accent-color);
+    }
+  </style>
+</head>
+<body>
+
+<header>Welcome, Recipient!</header>
+
+<div class="nav-buttons">
+  <button class="nav-btn active" onclick="showTab('profile')">Profile</button>
+  <button class="nav-btn" onclick="showTab('messages')">Messages <span id="messageCount" class="badge" style="display: none;">0</span></button>
+</div>
+
+<div class="dashboard">
+  <div class="card">
+    <!-- Profile Tab Content -->
+    <div id="profileTab" class="tab-content active">
+      <div class="profile-header">
+        <h2>Your Dashboard</h2>
+      </div>
+
+      <div class="details">
+        <div class="info-box">
+          <div class="label">Name</div>
+          <div class="value" id="dispName">Loading...</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Email</div>
+          <div class="value" id="dispEmail">Loading...</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Blood Group</div>
+          <div class="value" id="dispBloodGroup">Loading...</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Organ Needed</div>
+          <div class="value" id="dispOrgan">Loading...</div>
+        </div>
+      </div>
+
+      <div class="btns">
+        <button class="btn edit-btn" onclick="openModal()">Edit Details</button>
+        <button class="btn logout-btn" onclick="logout()">Logout</button>
+      </div>
+
+      <!-- Updates Section -->
+      <div class="updates-section">
+        <h3>Recent Updates from Life-Link</h3>
+        <div id="updatesList">
+          <div class="update-item">
+            <div class="update-text">You have been matched with a donor for your organ. Please wait for further communication.</div>
+            <div class="date">April 15, 2025</div>
+          </div>
+          <!-- Additional updates can be dynamically added here -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Messages Tab Content -->
+    <div id="messagesTab" class="tab-content">
+      <div class="profile-header">
+        <h2>Messages</h2>
+      </div>
+
+      <div class="messages-section">
+        <div id="messageList" class="message-list">
+          <!-- Messages will be loaded here -->
+        </div>
+
+        <div class="compose-message">
+          <h3>Send Message to Admin</h3>
+          <textarea id="messageInput" placeholder="Type your message here..."></textarea>
+          <button class="send-btn" onclick="sendMessage()">Send</button>
+          <div style="clear: both;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <h3>Edit Your Details</h3>
+    <input type="text" id="name" placeholder="Name" />
+    <input type="text" id="bloodGroup" placeholder="Blood Group" />
+    <input type="text" id="organ" placeholder="Organ Needed" />
+    <div style="display: flex; justify-content: space-between;">
+      <button class="btn edit-btn" onclick="saveChanges()">Save</button>
+      <button class="btn logout-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Global variables
+  let userData = null;
+  let messages = [];
+  let unreadMessages = 0;
+
+  async function fetchRecipientDetails() {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      alert("Session expired. Please log in again.");
+      location.href = "login.html";
+      return;
+    }
+
+    document.getElementById("dispName").textContent = "Loading...";
+    document.getElementById("dispEmail").textContent = "Loading...";
+    document.getElementById("dispBloodGroup").textContent = "Loading...";
+    document.getElementById("dispOrgan").textContent = "Loading...";
+
+    try {
+      const res = await fetch(`/api/auth/user/${email}`);
+      if (!res.ok) {
+        throw new Error("Error fetching user details");
+      }
+      const data = await res.json();
+      userData = data.user;
+
+      document.getElementById("dispName").textContent = userData.name;
+      document.getElementById("dispEmail").textContent = userData.email;
+      document.getElementById("dispBloodGroup").textContent = userData.bloodGroup;
+      document.getElementById("dispOrgan").textContent = userData.organ;
+
+      document.getElementById("name").value = userData.name;
+      document.getElementById("bloodGroup").value = userData.bloodGroup;
+      document.getElementById("organ").value = userData.organ;
+      
+      // Now fetch messages after user data is loaded
+      fetchMessages();
+    } catch (error) {
+      alert("Failed to load recipient details. Please try again.");
+      console.error(error);
+    }
+  }
+
+  function openModal() {
+    document.getElementById("editModal").style.display = "flex";
+  }
+
+  function closeModal() {
+    document.getElementById("editModal").style.display = "none";
+  }
+
+  async function saveChanges() {
+    const email = localStorage.getItem("email");
+    const updatedUser = {
+      name: document.getElementById("name").value,
+      bloodGroup: document.getElementById("bloodGroup").value,
+      organ: document.getElementById("organ").value,
+    };
+
+    try {
+      const res = await fetch(`/api/auth/user/${email}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedUser)
+      });
+
+      if (res.ok) {
+        alert("Details updated successfully!");
+        closeModal();
+        fetchRecipientDetails();
+      } else {
+        throw new Error("Error updating user details");
+      }
+    } catch (error) {
+      alert("Failed to update details. Please try again.");
+      console.error(error);
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    location.href = "login.html";
+  }
+
+  function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    
+    // Show the selected tab
+    if (tabName === 'profile') {
+      document.getElementById('profileTab').classList.add('active');
+    } else if (tabName === 'messages') {
+      document.getElementById('messagesTab').classList.add('active');
+      // Mark messages as read when viewing messages tab
+      markMessagesAsRead();
+    }
+    
+    // Update active button
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+  }
+
+  function markMessagesAsRead() {
+    unreadMessages = 0;
+    updateMessageBadge();
+    
+    // In a real app, you would also send this info to the server
+    // to mark messages as read in the database
+  }
+
+  function updateMessageBadge() {
+    const badge = document.getElementById('messageCount');
+    if (unreadMessages > 0) {
+      badge.textContent = unreadMessages;
+      badge.style.display = 'inline';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  async function fetchMessages() {
+    const email = localStorage.getItem("email");
+    if (!email) return;
+
+    try {
+      // In a real application, you would fetch messages from your API
+      // For this demo, we'll simulate messages with mock data
+      await simulateMessageFetch(email);
+      
+      // Simulate some unread messages
+      countUnreadMessages();
+      
+      // Display messages
+      displayMessages();
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  }
+
+  // Simulate fetching messages from server
+  async function simulateMessageFetch(email) {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Mock message data for recipient
+    messages = [
+      {
+        id: 1,
+        from: 'admin',
+        to: email,
+        content: 'Your recipient application has been received. We are currently reviewing your medical information.',
+        timestamp: new Date(Date.now() - 86400000).toISOString(),
+        read: true,
+      },
+      {
+        id: 2,
+        from: email,
+        to: 'admin',
+        content: 'I would like to know the status of my organ matching process.',
+        timestamp: new Date(Date.now() - 72000000).toISOString(),
+        read: true,
+      },
+      {
+        id: 3,
+        from: 'admin',
+        to: email,
+        content: 'Good news! We have found a potential donor match. Please prepare for a phone call from our medical team in the next 48 hours.',
+        timestamp: new Date(Date.now() - 43200000).toISOString(),
+        read: false,
+      }
+    ];
+  }
+
+  function countUnreadMessages() {
+    unreadMessages = messages.filter(msg => msg.from === 'admin' && !msg.read).length;
+    updateMessageBadge();
+  }
+
+  function displayMessages() {
+    const messageList = document.getElementById('messageList');
+    messageList.innerHTML = '';
+    
+    if (messages.length === 0) {
+      messageList.innerHTML = '<p>No messages found.</p>';
+      return;
+    }
+    
+    // Sort messages by timestamp (newest first)
+    messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    messages.forEach(message => {
+      const messageItem = document.createElement('div');
+      messageItem.classList.add('message-item');
+      
+      if (message.from === 'admin' && !message.read) {
+        messageItem.style.borderLeft = '4px solid var(--primary-color)';
+      }
+      
+      const formattedDate = new Date(message.timestamp).toLocaleString();
+      
+      const messageHeader = document.createElement('div');
+      messageHeader.classList.add('message-header');
+      messageHeader.innerHTML = `
+        <span>${message.from === 'admin' ? 'From: Admin' : 'To: Admin'}</span>
+        <span class="message-time">${formattedDate}</span>
+      `;
+      
+      const messageContent = document.createElement('div');
+      messageContent.classList.add('message-content');
+      messageContent.textContent = message.content;
+      
+      messageItem.appendChild(messageHeader);
+      messageItem.appendChild(messageContent);
+      messageList.appendChild(messageItem);
+    });
+  }
+
+  async function sendMessage() {
+    const email = localStorage.getItem("email");
+    const content = document.getElementById('messageInput').value.trim();
+    
+    if (!content) {
+      alert('Please enter a message.');
+      return;
+    }
+    
+    // Create new message object
+    const newMessage = {
+      id: messages.length + 1,
+      from: email,
+      to: 'admin',
+      content: content,
+      timestamp: new Date().toISOString(),
+      read: false,
+    };
+    
+    // In a real app, send to server
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Add to local messages
+      messages.push(newMessage);
+      
+      // Clear input
+      document.getElementById('messageInput').value = '';
+      
+      // Refresh messages display
+      displayMessages();
+      
+      alert('Message sent successfully!');
+    } catch (error) {
+      alert('Failed to send message. Please try again.');
+      console.error(error);
+    }
+  }
+
+  // Check for new messages periodically
+  function startMessagePolling() {
+    setInterval(fetchMessages, 60000); // Check every minute
+  }
+
+  window.onload = function() {
+    fetchRecipientDetails();
+    startMessagePolling();
+  };
+</script>
+
+</body>
+</html>

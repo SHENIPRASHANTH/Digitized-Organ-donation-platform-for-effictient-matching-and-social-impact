@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Life-Link | Registration</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <script src="https://kit.fontawesome.com/a2e0c6bd6c.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --primary-color: #007C91;
+      --accent-color: #0097A7;
+      --background: #F7FAFC;
+      --input-bg: #fff;
+      --border-radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      width: 100%;
+      max-width: 900px;
+      padding: 50px 40px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary-color);
+      font-size: 28px;
+      margin-bottom: 35px;
+      font-weight: 600;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 16px;
+      padding-left: 42px;
+      background-color: var(--input-bg);
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 15px;
+      color: #333;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent-color);
+      outline: none;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 14px;
+      top: 41px;
+      color: #888;
+    }
+
+    .phone-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phone-group select,
+    .phone-group input {
+      padding-left: 16px;
+    }
+
+    .form-footer {
+      grid-column: span 2;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .form-footer button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px 32px;
+      font-size: 16px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .form-footer button:hover {
+      background-color: var(--accent-color);
+    }
+
+    .form-footer p {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .form-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .spinner {
+      display: none;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+    }
+
+    button.loading .spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 600px) {
+      .form-footer {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" style="
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 16px;
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+  ">
+    <i class="fas fa-home"></i> Home
+  </a>
+
+  <div class="container">
+    <h2>Life-Link Organ Registration</h2>
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="userType">User Type</label>
+        <i class="fas fa-user-tag"></i>
+        <select id="userType" required>
+          <option value="donor">Donor</option>
+          <option value="recipient">Recipient</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <i class="fas fa-user"></i>
+        <input type="text" id="name" placeholder="John Doe" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" placeholder="john@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" placeholder="********" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <i class="fas fa-phone"></i>
+        <div class="phone-group">
+          <select id="countryCode" required>
+            <option value="+91">+91 (India)</option>
+            <option value="+1">+1 (USA)</option>
+            <option value="+44">+44 (UK)</option>
+            <option value="+61">+61 (Australia)</option>
+            <option value="+81">+81 (Japan)</option>
+            <option value="+971">+971 (UAE)</option>
+          </select>
+          <input type="tel" id="phone" placeholder="XXXXXXXXXX" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="bloodGroup">Blood Group</label>
+        <i class="fas fa-tint"></i>
+        <select id="bloodGroup" required>
+          <option value="">Select</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="organ">Organ</label>
+        <i class="fas fa-heartbeat"></i>
+        <select id="organ" required>
+          <optgroup label="Living Donation">
+            <option value="Kidney">Kidney</option>
+            <option value="Liver (Lobe)">Liver (Lobe)</option>
+            <option value="Lung (Lobe)">Lung (Lobe)</option>
+          </optgroup>
+          <optgroup label="Posthumous Donation">
+            <option value="Heart">Heart</option>
+            <option value="Liver">Liver</option>
+            <option value="Lungs">Lungs</option>
+            <option value="Pancreas">Pancreas</option>
+            <option value="Intestines">Intestines</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="form-group" style="grid-column: span 2;">
+        <label for="address">Address</label>
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" id="address" placeholder="Full Address" required>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" id="submitBtn">
+          <div class="spinner"></div>
+          Register
+        </button>
+        <p>Already registered? <a href="login.html">Login here</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const button = document.getElementById("submitBtn");
+      button.classList.add("loading");
+  
+      const data = {
+        userType: document.getElementById("userType").value,
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        phone: document.getElementById("countryCode").value + document.getElementById("phone").value,
+        bloodGroup: document.getElementById("bloodGroup").value,
+        organ: document.getElementById("organ").value,
+        address: document.getElementById("address").value
+      };
+  
+      try {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        
+        if (response.ok) {
+          alert(result.message);
+          window.location.href = "login.html";
+        } else {
+          if (result.error && result.error === "email_exists_donor") {
+            alert("You have already registered as a donor with this email. If you want, you can register as a recipient.");
+          } else {
+            alert(result.message || "Registration failed. Try again.");
+          }
+        }
+      } catch (error) {
+        alert("Registration failed. Try again.");
+      } finally {
+        button.classList.remove("loading");
+      }
+    });
+  </script>
+  
+</body>
+</html>

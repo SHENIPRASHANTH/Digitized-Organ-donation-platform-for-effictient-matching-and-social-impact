@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeBridge: Advanced Organ Donation Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style> 
+    :root {
+    --primary-color: #e63946; /* Dark Red */
+    --secondary-color: green; /* Teal */
+    --accent-color: #4CB963; /* Accent Green */
+    --text-color: #333; /* Dark Gray for text */
+    --background-light: #F5F5F5; /* Light Gray for backgrounds */
+    --background-dark: #264653; /* Dark background color */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-light); /* Light background for the body */
+}
+
+.container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--background-dark);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 15px 0;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 30px;
+}
+
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.navbar-links a:hover::after {
+    width: 100%;
+}
+
+/* Sections */
+section {
+    padding: 120px 0;
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-color);
+}
+
+/* Organs Section */
+#organs {
+    background-color: var(--background-light);
+    padding: 100px 0;
+}
+
+#organs .section-header h2 {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+#organs .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+#organs .feature-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 25px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#organs .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+#organs .feature-icon {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+#organs h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+#organs p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+/* Hero Section */
+#hero {
+    text-align: center;
+    padding: 200px 0;
+    margin-top: 80px;
+    position: relative;
+    overflow: hidden;
+    background-image: url('back.png');
+    background-size: cover;       /* Makes the image cover the entire section */
+    background-position: center;  /* Centers the image */
+    background-repeat: no-repeat; /* Prevents image from repeating */
+    color: #fff;
+}
+
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color:rgb(175, 69, 69);
+    color: white;
+    padding: 15px 50px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+    background-color: rgb(244, 81, 81);
+    color: white;
+    border-radius: 0px;
+}
+
+/* AI-Enhanced Sections */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+}
+
+.feature-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+    font-size: 4rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.feature-icon img {
+    width: 100%;
+    height: auto;
+    max-width: 80px; /* Adjust based on your preference */
+    max-height: 80px; /* Adjust based on your preference */
+    object-fit: contain;
+}
+
+/* AI Matching Section */
+#ai-matching {
+    background-color:var(--background-light);
+}
+
+.ai-text-animation {
+    position: relative;
+    overflow: hidden;
+}
+
+.ai-text-scroll {
+    color: green;
+    animation: scrollText 40s linear infinite;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+@keyframes scrollText {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Footer */
+footer {
+    background-color: var(--background-dark);
+    color: #fff;
+    padding: 80px 0;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+/* Donor & Recipient Section */
+/* Donor & Recipient Section */
+#donor-recipient {
+    background-color: var(--background-light);
+    padding: 100px 0;
+}
+
+#donor-recipient .section-header h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);  /* Explicitly set to primary red */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.portal-section {
+    margin-bottom: 80px;
+}
+
+.portal-section .section-header h3 {
+    font-size: 2rem;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#donor-recipient .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+#donor-recipient .feature-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 25px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#donor-recipient .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+#donor-recipient .feature-icon {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+#donor-recipient h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+#donor-recipient p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none;
+    }
+}
+#chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+/* Chatbot Container */
+#chatbot-container {
+    position: fixed;
+    bottom: 80px;
+    right: 30px;
+    width: 350px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    z-index: 9999;
+    animation: slideUp 0.7s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Chat Header */
+.chat-header {
+    background: linear-gradient(135deg, #f44336, #e91e63);
+    color: white;
+    padding: 12px 15px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+}
+
+/* Chat Messages */
+#chat-messages {
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+    font-size: 15px;
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    border-top: 1px solid #eee;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    font-size: 15px;
+    outline: none;
+}
+
+.chat-input button {
+    background: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.chat-input button:hover {
+    background: #388e3c;
+}
+
+/* Messages Styling */
+.user-message, .bot-message {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.user-message {
+    background: #f1f1f1;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.bot-message {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.typing::after {
+    content: " ▌";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+/* #chatbotToggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #d9534f;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+#chatbotToggle:hover {
+    transform: scale(1.1);
+}
+
+#chatbot {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 320px;
+    height: 400px;
+    background-color: white;
+    border: 2px solid #d9534f;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+}
+
+#chatbotHeader {
+    background-color: #d9534f;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatbotMessages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+#chatbotInputContainer {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+#chatbotInput {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+#chatbotInputContainer button {
+    margin-left: 5px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+} */
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <div class="navbar-logo">Digitized Organ Donation platform for efficient matching and social impact </div>
+            <div class="navbar-links">
+                <a href="#hero">Home</a>
+                <a href="#organs">Organs</a>
+                <a href="#donor-types">Donor Types</a>
+                <a href="#medical-process">Process</a>
+                <a href="register.html">Donor Register</a>
+                <a href ="register.html">Recipient Register</a>
+                <a href="login.html">Login</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container hero-content">
+            <h1>Revolutionizing Organ Donation</h1>
+            <p>Give the gift of life
+                Become an organ donor!</p>
+            <a href="#hero" class="cta-button">Register for pledge</a>
+        </div>
+    </section>
+    
+    <!-- Chatbot Widget -->
+<!-- <div id="chatbotToggle" onclick="toggleChatbot()">💬</div>
+<div id="chatbot">
+    <div id="chatbotHeader">Life-Link Assistant <span onclick="toggleChatbot()">✖</span></div>
+    <div id="chatbotMessages"></div>
+    <div id="chatbotInputContainer">
+        <input type="text" id="chatbotInput" placeholder="Ask me about organ donation..." />
+        <button onclick="sendChat()">➤</button>
+    </div>
+</div> -->
+
+    <!-- Organs Section -->
+    <section id="organs">
+        <div class="container">
+            <div class="section-header">
+                <h2>Organs You Can Donate</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="heart.png" alt="Heart" >
+                    </div>
+                    <h3>Heart</h3>
+                    <p>Save lives by donating your heart to those in need of a transplant due to cardiac conditions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://img.icons8.com/color/96/lungs.png" alt="Lungs">
+                    </div>
+                    <h3>Lungs</h3>
+                    <p>Help patients with severe respiratory issues by donating one or both lungs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://img.icons8.com/color/96/kidney.png" alt="Kidneys">
+                    </div>
+                    <h3>Kidneys</h3>
+                    <p>A kidney donation can significantly improve the quality of life for someone with renal failure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://img.icons8.com/color/96/liver.png" alt="Liver">
+                    </div>
+                    <h3>Liver</h3>
+                    <p>Donate a portion of your liver to aid those suffering from chronic liver diseases.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="cornea.png" alt="Corneas">
+                    </div>
+                    <h3>Corneas</h3>
+                    <p>Restore sight to individuals with corneal blindness by donating your eyes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="pancreas.png" alt="Pancreas">
+                    </div>
+                    <h3>Pancreas</h3>
+                    <p>Help individuals with pancreatic diseases by donating this vital organ.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="bone-marrow.png" alt="Bone Marrow">
+                    </div>
+                    <h3>Bone Marrow</h3>
+                    <p>Bone marrow donation is critical for patients suffering from blood-related illnesses.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://img.icons8.com/color/96/skin.png" alt="Skin">
+                    </div>
+                    <h3>Skin</h3>
+                    <p>Skin donations are life-saving for burn victims and patients undergoing reconstructive surgery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Eligibility Section -->
+<section id="eligibility">
+    <div class="container">
+        <div class="section-header">
+            <h2>Who Can Donate?</h2>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Age Criteria</h3>
+                <p>While there is no strict age limit for organ donation, healthy individuals in the age range of 18 to 65 are typically eligible for organ donation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Health Conditions</h3>
+                <p>Healthy individuals with no history of severe chronic illnesses, such as cancer or heart disease, can be considered for donation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Medical Screening</h3>
+                <p>Potential donors undergo a thorough medical evaluation, including blood tests and organ function tests, to ensure compatibility and viability.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <h3>Living Donors</h3>
+                <p>Living individuals who are willing to donate a kidney, partial liver, or other tissues must be in good health and undergo a comprehensive medical assessment.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h3>Brain Death Criteria</h3>
+                <p>Individuals declared brain-dead due to severe trauma or illness may be eligible for organ donation, even if their heart is still beating.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Donor Family Consent</h3>
+                <p>In the case of deceased donors, family consent is required to proceed with the organ donation process.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Donor and Recipient Section -->
+<section id="donor-recipient">
+    <div class="container">
+        <div class="section-header">
+            <h2>Donor & Recipient Portal</h2>
+        </div>
+
+        <!-- Donor Section -->
+        <div id="donor" class="portal-section">
+            <div class="section-header">
+                <h3>Donor Portal</h3>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h4>Registration</h4>
+                    <p>Donors can easily register and create an account to begin the donation process.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <h4>Login</h4>
+                    <p>Registered donors can log in to their portal and access donation management features.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h4>Dashboard</h4>
+                    <p>Donors can view their registration status, and health metrics, and receive updates.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h4>Update Details</h4>
+                    <p>Donors can update their personal information, medical history, and more from their dashboard.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h4>Registration Successful</h4>
+                    <p>Once registered, donors will be informed of their successful registration and can proceed.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipient Section -->
+        <div id="recipient" class="portal-section">
+            <div class="section-header">
+                <h3>Recipient Portal</h3>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h4>Registration</h4>
+                    <p>Recipients can register to receive a donor organ by creating their account and sharing their medical details.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <h4>Login</h4>
+                    <p>Registered recipients can log in to track their matching process and organ availability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h4>Dashboard</h4>
+                    <p>Recipients can monitor their waiting list position, updates on matches, and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <h4>Matching Process (using Neo4j)</h4>
+                    <p>Neo4j database helps in matching recipients with potential donors based on various criteria such as blood type, medical history, and location.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Donor Types Section -->
+    <section id="donor-types">
+        <div class="container">
+            <div class="section-header">
+                <h2>Comprehensive Donor Types</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Living Donors</h3>
+                    <p>Individuals who voluntarily donate organs like kidneys or partial liver while maintaining their health and quality of life.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <h3>Deceased Donors</h3>
+                    <p>Comprehensive organ recovery from individuals who have been declared brain dead, maximizing life-saving potential.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h3>Medical Evaluation</h3>
+                    <p>Rigorous medical screening ensuring donor safety, organ viability, and recipient compatibility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+    <!-- AI Matching Section -->
+    <section id="ai-matching">
+        <div class="container">
+            <div class="section-header">
+                <h2>Matching</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Precision Algorithms</h3>
+                    <p>Our System analyzes complex genetic, physiological, and immunological data to identify the most compatible donor-recipient matches.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Matching Analytics</h3>
+                    <p>Our system predicts the percent of matches</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Real-Time Data Processing</h3>
+                    <p>Instantaneous analysis of millions of medical data points to optimize organ allocation strategies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Medical Process Section -->
+    <section id="medical-process" style="background-color: var(--background-light);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Advanced Medical Process</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <h3>Comprehensive Screening</h3>
+                    <p>Multi-stage medical evaluation including genetic testing, immunological compatibility, and detailed health assessments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <h3>Dynamic Matching</h3>
+                    <p>Continuous refinement of matching algorithms based on real-time medical data and emerging research.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-holding-medical"></i>
+                    </div>
+                    <h3>Holistic Support</h3>
+                    <p>Comprehensive support for donors, recipients, and their families throughout the entire donation journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div id = "contact">
+                    <h4>Digitized Platform for the connection</h4>
+                    <p>Transforming Lives Through Advanced Medical Technology</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <a href="#" style="color: #fff; display: block; margin-bottom: 10px;">Privacy Policy</a>
+                    <a href="#" style="color: #fff; display: block;">Medical Guidelines</a>
+                </div>
+                <div>
+                    <h4>Contact Us</h4>
+                    <p>support@lifebridgedonation.org</p>
+                </div>
+            </div>
+        </div>
+    </footer><!-- Floating Chatbot Button -->
+    <div id="chatbot-button" onclick="toggleChatbot()">
+        🤖 Chat with AI
+    </div>
+    
+    <!-- Chatbot container -->
+    <div id="chatbot-container" style="display: none;">
+        <div class="chat-header">
+            🤖 LifeLink AI Assistant
+        </div>
+        <div id="chat-messages">
+            <div class="bot-message typing">💬 I am your AI assistant! Ask me anything about organ donation.</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>    
+</body>
+<script>
+    // Toggle Chatbot Visibility
+    function toggleChatbot() {
+        const chatbot = document.getElementById("chatbot-container");
+        const button = document.getElementById("chatbot-button");
+    
+        if (chatbot.style.display === "none" || chatbot.style.display === "") {
+            chatbot.style.display = "block";
+            button.textContent = "Close Chat";
+        } else {
+            chatbot.style.display = "none";
+            button.textContent = "Chat with AI";
+        }
+    }
+    
+    function getBotReply(message) {
+        message = message.toLowerCase();
+    
+        if (message.includes("what is organ donation")) {
+            return "Organ donation is the process of giving an organ or a part of an organ for transplantation into another person.";
+        } else if (message.includes("who can donate")) {
+            return "Almost anyone can become an organ donor, regardless of age, race, or medical history.";
+        } else if (message.includes("which organs")) {
+            return "Organs that can be donated include heart, lungs, liver, kidneys, pancreas, and intestines.";
+        } else if (message.includes("is it safe")) {
+            return "Living donation is generally safe with minimal risks. Deceased donation does not impact the body’s appearance.";
+        } else if (message.includes("Hi")){
+            return "Hello! Welcome to the Lifesavier platform,Iam here to guide you throught the process"
+        }
+         else if (
+            message.includes("i do not know the process") ||    
+            message.includes("what is the process") ||
+            message.includes("explain process") ||
+            message.includes("how does it work")
+        ) {
+            return `Here’s the organ donation process:
+    1️⃣ Registration
+    2️⃣ Medical Evaluation 
+    3️⃣ Consent
+    4️⃣ Matching
+    5️⃣ Transplant
+    6️⃣ Recovery
+    
+    The process ensures safety, ethics, and the best recipient match. 🌱`;
+        } else {
+            return "I am still learning. Try asking about organ donation, who can donate, or how it works!";
+        }
+    }
+    
+    // Send User Message and Show Bot Reply
+    function sendMessage() {
+        const input = document.getElementById("user-input");
+        const msg = input.value.trim();
+        if (!msg) return;
+    
+        const chat = document.getElementById("chat-messages");
+    
+        const userMsg = document.createElement("div");
+        userMsg.className = "user-message";
+        userMsg.textContent = msg;
+        chat.appendChild(userMsg);
+    
+        input.value = "";
+        input.focus();
+    
+        const botMsg = document.createElement("div");
+        botMsg.className = "bot-message typing";
+        botMsg.textContent = "Typing...";
+        chat.appendChild(botMsg);
+    
+        chat.scrollTop = chat.scrollHeight;
+    
+        setTimeout(() => {
+            botMsg.classList.remove("typing");
+            botMsg.textContent = getBotReply(msg);
+            chat.scrollTop = chat.scrollHeight;
+        }, 1000);
+    }
+    </script>
+    
+    
+</html>

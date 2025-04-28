@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Life-Link | Login</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <script src="https://kit.fontawesome.com/a2e0c6bd6c.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --primary-color: #007C91;
+      --accent-color: #0097A7;
+      --background: #F7FAFC;
+      --input-bg: #fff;
+      --border-radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      width: 100%;
+      max-width: 500px;
+      padding: 50px 40px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary-color);
+      font-size: 28px;
+      margin-bottom: 35px;
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      padding-left: 42px;
+      background-color: var(--input-bg);
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 15px;
+      color: #333;
+    }
+
+    input:focus {
+      border-color: var(--accent-color);
+      outline: none;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 14px;
+      top: 42px;
+      color: #888;
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .form-footer button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px 32px;
+      font-size: 16px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      position: relative;
+      width: 100%;
+    }
+
+    .form-footer button:hover {
+      background-color: var(--accent-color);
+    }
+
+    .form-footer p {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .form-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .spinner {
+      display: none;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+    }
+
+    button.loading .spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Life-Link Login</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" placeholder="john@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" placeholder="********" required>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" id="loginBtn">
+          <div class="spinner"></div>
+          Login
+        </button>
+        <p>New user? <a href="register.html">Register here</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const button = document.getElementById("loginBtn");
+      button.classList.add("loading");
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+        button.classList.remove("loading");
+
+        if (response.ok) {
+          alert("Login successful!");
+          localStorage.setItem("email", email);
+
+          if (data.userType === "Admin") {
+            window.location.href = "admin-dashboard.html";
+          } else if (data.userType === "Donor") {
+            window.location.href = "donor-dashboard.html";
+          } else if (data.userType === "Recipient") {
+            window.location.href = "recipient-dashboard.html";
+          }
+        } else {
+          alert("Login failed: " + data.error);
+        }
+      } catch (error) {
+        button.classList.remove("loading");
+        alert("Error: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

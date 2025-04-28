@@ -1,0 +1,891 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | Life-Link</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #e0f2f1, #ffffff);
+      padding: 20px;
+      color: #004d40;
+    }
+  
+    header {
+      font-size: 32px;
+      font-weight: 700;
+      color: #004d40;
+      margin-bottom: 20px;
+      background-color: #ffffffaa;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(10px);
+    }
+  
+    .marquee {
+      background-color: #004d40;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      overflow: hidden;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  
+    .marquee-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 20s linear infinite;
+    }
+  
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+  
+    .section-title {
+      font-size: 24px;
+      color: #004d40;
+      margin-top: 40px;
+    }
+  
+    .container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      gap: 20px;
+    }
+  
+    .list {
+      width: 48%;
+      background-color: #ffffffcc;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+  
+    .user {
+      cursor: pointer;
+      margin: 10px 0;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 150, 136, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+  
+    .user:hover {
+      background-color: #b2dfdb;
+      transform: translateY(-4px);
+    }
+  
+    .details {
+      display: none;
+      margin-top: 10px;
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+  
+    .verified-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      gap: 20px;
+    }
+  
+    .verified-box {
+      width: 48%;
+      background-color: #ffffffcc;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+  
+    .verified-button,
+    .not-verified-button {
+      background-color: #28a745;
+      color: white;
+      padding: 8px 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+  
+    .not-verified-button {
+      background-color: #dc3545;
+    }
+  
+    .match-button {
+      background-color: #00796b;
+      color: white;
+      padding: 14px 24px;
+      cursor: pointer;
+      border-radius: 10px;
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      box-shadow: 0 6px 20px rgba(0, 121, 107, 0.3);
+      transition: all 0.3s ease;
+    }
+  
+    .match-button:hover {
+      background-color: #004d40;
+      transform: scale(1.05);
+    }
+  
+    .loading-animation {
+      display: none;
+      color: #00796b;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+      text-align: center;
+      animation: pulse 1s infinite;
+    }
+  
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.4;
+      }
+    }
+  
+    .match-results {
+      margin-top: 30px;
+      font-weight: bold;
+      padding: 20px;
+      background-color: #ffffffcc;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+  
+    .match-results p {
+      margin: 10px 0;
+    }
+    .top-nav {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background-color: #004d40;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: #00796b;
+      transform: scale(1.05);
+    }
+
+    /* Message modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 12px;
+      width: 60%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .close-btn {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: #004d40;
+    }
+
+    .message-form {
+      margin-top: 20px;
+    }
+
+    .message-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+      font-family: 'Inter', sans-serif;
+      min-height: 120px;
+    }
+
+    .send-btn {
+      background-color: #00796b;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      float: right;
+      transition: all 0.3s ease;
+    }
+
+    .send-btn:hover {
+      background-color: #004d40;
+      transform: scale(1.05);
+    }
+
+    .message-btn {
+      background-color: #00796b;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .message-btn:hover {
+      background-color: #004d40;
+    }
+
+
+    /* Messages tab */
+    .messages-section {
+      margin-top: 40px;
+      background-color: #ffffffcc;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .message-list {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .message-item {
+      background-color: white;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #004d40;
+    }
+
+    .message-content {
+      margin-top: 5px;
+      padding-top: 5px;
+      border-top: 1px solid #eee;
+    }
+
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    .tab-btn {
+      background-color: #e0f2f1;
+      color: #004d40;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background-color: #00796b;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+  
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="nav-buttons">
+      <button class="nav-btn" id="messagesBtn">📬 Messages</button>
+      <button class="nav-btn" onclick="logout()">🚪 Logout</button>
+    </div>
+  </nav>
+  
+  <div class="marquee">
+    <span class="marquee-text">🩺 Welcome to the Life-Link Admin Panel — Empowering lives through donation... 🫀 Stay connected. Stay informed. 💉</span>
+  </div>
+  
+  <div class="tab-buttons">
+    <button class="tab-btn active" onclick="openTab('dashboard')">Dashboard</button>
+    <button class="tab-btn" onclick="openTab('messages')">Messages</button>
+  </div>
+
+  <div id="dashboard" class="tab-content active">
+    <div class="container">
+      <div class="list">
+        <h2>👨‍⚕️ Donors</h2>
+        <div id="donorList"></div>
+      </div>
+      <div class="list">
+        <h2>🧑‍🤝‍🧑 Recipients</h2>
+        <div id="recipientList"></div>
+      </div>
+    </div>
+
+    <div class="verified-section">
+      <div class="verified-box">
+        <h3>✅ Verified Donors</h3>
+        <ul id="verifiedDonors"></ul>
+        <h3>❌ Not Verified Donors</h3>
+        <ul id="notVerifiedDonors"></ul>
+      </div>
+      <div class="verified-box">
+        <h3>✅ Verified Recipients</h3>
+        <ul id="verifiedRecipients"></ul>
+        <h3>❌ Not Verified Recipients</h3>
+        <ul id="notVerifiedRecipients"></ul>
+      </div>
+    </div>
+
+    <!-- <button class="match-button" onclick="findMatches()">🔍 Find Matches</button> -->
+    <div class="loading-animation" id="loadingMessage">Please wait... Matching users...</div>
+    <div id="matchResults" class="match-results"></div>
+  </div>
+
+  <div id="messages" class="tab-content">
+    <div class="messages-section">
+      <h2>📬 Messages</h2>
+      <div class="message-list" id="adminMessageList">
+        <!-- Messages will be displayed here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Modal -->
+  <!-- <div id="messageModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeMessageModal()">&times;</span>
+      <h2>Send Message</h2>
+      <p id="messageRecipient"></p>
+      <form class="message-form" id="messageForm">
+        <input type="hidden" id="recipientEmail" name="recipientEmail">
+        <input type="hidden" id="recipientRole" name="recipientRole">
+        <textarea id="messageContent" placeholder="Type your message here..." required></textarea>
+        <button type="submit" class="send-btn">Send Message</button>
+      </form>
+    </div>
+  </div> -->
+  <div id="messageModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeMessageModal()">&times;</span>
+      <h2>Send Message</h2>
+      <p id="messageRecipient"></p>
+      <form class="message-form" id="messageForm">
+        <input type="hidden" id="recipientEmail" name="recipientEmail">
+        <input type="hidden" id="recipientRole" name="recipientRole">
+        <textarea id="messageContent" placeholder="Type your message here..." required></textarea>
+        <button type="submit" class="send-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+  <button class="tab-btn" onclick="openTab('urgency')">⚠️ Urgency List</button>
+  <div id="urgency" class="tab-content">
+    <div class="urgency-section">
+      <h2>⚠️ Urgency List</h2>
+      <div class="list">
+        <h3>Urgent Donors</h3>
+        <div id="urgentDonorsList"></div>
+      </div>
+      <div class="list">
+        <h3>Urgent Recipients</h3>
+        <div id="urgentRecipientsList"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let allDonors = [], allRecipients = [];
+    let allMessages = [];
+
+    async function fetchUsers() {
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/users');
+        const data = await response.json();
+        allDonors = data.donors;
+        allRecipients = data.recipients;
+
+        displayUsers(allDonors, "donorList", "donor");
+        displayUsers(allRecipients, "recipientList", "recipient");
+
+        return { donors: allDonors, recipients: allRecipients };
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    }
+
+    function displayUsers(users, elementId, role) {
+      const list = document.getElementById(elementId);
+      list.innerHTML = "";
+
+      users.forEach(user => {
+        const userDiv = document.createElement('div');
+        userDiv.classList.add("user");
+        userDiv.innerHTML = `<p>${user.name} (${user.email}) <span class="verification">${user.verified ? '✅ Verified' : '❌ Not Verified'}</span></p>`;
+        userDiv.onclick = () => toggleDetails(user.email, role, user);
+
+        const buttonContainer = document.createElement('div');
+
+        if (!user.verified) {
+          const verifyButton = document.createElement('button');
+          verifyButton.classList.add('verified-button');
+          verifyButton.innerText = 'Verify';
+          verifyButton.onclick = (e) => verifyUser(user.email, role, e);
+          buttonContainer.appendChild(verifyButton);
+        }
+
+        const messageButton = document.createElement('button');
+        messageButton.classList.add('message-btn');
+        messageButton.innerText = '✉️ Message';
+        messageButton.onclick = (e) => openMessageModal(user.email, role, user.name, e);
+        buttonContainer.appendChild(messageButton);
+
+        userDiv.appendChild(buttonContainer);
+        list.appendChild(userDiv);
+      });
+
+      updateVerificationLists();
+    }
+
+    // function toggleDetails(email, role, user) {
+    //   const emailEscaped = escapeSelector(email);
+
+    //   let userDetails = document.getElementById(`details-${emailEscaped}`);
+    //   if (!userDetails) {
+    //     userDetails = document.createElement('div');
+    //     userDetails.id = `details-${emailEscaped}`;
+    //     userDetails.classList.add('details');
+    //     userDetails.innerHTML = `
+    //       <p><strong>Name:</strong> ${user.name}</p>
+    //       <p><strong>Email:</strong> ${user.email}</p>
+    //       <p><strong>Phone:</strong> ${user.phone}</p>
+    //       <p><strong>Blood Group:</strong> ${user.bloodGroup}</p>
+    //       <p><strong>Organ:</strong> ${user.organ}</p>
+    //     `;
+    //     document.getElementById(`${role}List`).appendChild(userDetails);
+    //   }
+
+    //   userDetails.style.display = userDetails.style.display === "block" ? "none" : "block";
+    // }
+    function toggleDetails(email, role, user) {
+  const emailEscaped = escapeSelector(email);
+
+  let userDetails = document.getElementById(`details-${emailEscaped}`);
+  if (!userDetails) {
+    userDetails = document.createElement('div');
+    userDetails.id = `details-${emailEscaped}`;
+    userDetails.classList.add('details');
+    userDetails.innerHTML = `
+      <p><strong>Name:</strong> ${user.name}</p>
+      <p><strong>Email:</strong> ${user.email}
+         <a href="mailto:${user.email}" style="margin-left: 10px;">
+           <button style="padding: 2px 8px; font-size: 12px;">Send Mail</button>
+         </a>
+      </p>
+      <p><strong>Phone:</strong> ${user.phone}</p>
+      <p><strong>Blood Group:</strong> ${user.bloodGroup}</p>
+      <p><strong>Organ:</strong> ${user.organ}</p>
+    `;
+    document.getElementById(`${role}List`).appendChild(userDetails);
+  }
+
+  userDetails.style.display = userDetails.style.display === "block" ? "none" : "block";
+}
+
+
+    function escapeSelector(str) {
+      return str.replace(/([.#$^*+?=!():{},&[\]\/\\])/g, '\\$1');
+    }
+    function verifyUser(email, role, event) {
+  event.stopPropagation();
+
+  const userList = role === 'donor' ? allDonors : allRecipients;
+  const user = userList.find(u => u.email === email);
+
+  if (user) {
+    user.verified = true;
+    displayUsers(allDonors, "donorList", "donor");
+    displayUsers(allRecipients, "recipientList", "recipient");
+    alert(`${user.name} is now verified!`);
+    displayMatches(generateMatches()); // Show matches immediately
+  }
+}
+
+function generateMatches() {
+  const verifiedDonors = allDonors.filter(donor => donor.verified);
+  const verifiedRecipients = allRecipients.filter(recipient => recipient.verified);
+
+  const matches = [];
+  verifiedDonors.forEach(donor => {
+    verifiedRecipients.forEach(recipient => {
+      if (donor.bloodGroup === recipient.bloodGroup && donor.organ === recipient.organ) {
+        matches.push({ donor, recipient });
+      }
+    });
+  });
+
+  return matches;
+}
+
+function updateVerificationLists() {
+  const verifiedDonors = allDonors.filter(donor => donor.verified);
+  const notVerifiedDonors = allDonors.filter(donor => !donor.verified);
+  const verifiedRecipients = allRecipients.filter(recipient => recipient.verified);
+  const notVerifiedRecipients = allRecipients.filter(recipient => !recipient.verified);
+
+  document.getElementById('verifiedDonors').innerHTML = verifiedDonors.map(donor => `<li>${donor.name}</li>`).join('');
+  document.getElementById('notVerifiedDonors').innerHTML = notVerifiedDonors.map(donor => `<li>${donor.name}</li>`).join('');
+  document.getElementById('verifiedRecipients').innerHTML = verifiedRecipients.map(recipient => `<li>${recipient.name}</li>`).join('');
+  document.getElementById('notVerifiedRecipients').innerHTML = notVerifiedRecipients.map(recipient => `<li>${recipient.name}</li>`).join('');
+
+  // Automatically show matches
+  displayMatches(generateMatches());
+}
+
+    function findMatches() {
+      const matchButton = document.querySelector('.match-button');
+      const loadingMessage = document.getElementById('loadingMessage');
+      matchButton.disabled = true;
+      loadingMessage.style.display = 'block';
+
+      setTimeout(() => {
+        const verifiedDonors = allDonors.filter(donor => donor.verified);
+        const verifiedRecipients = allRecipients.filter(recipient => recipient.verified);
+
+        const matches = [];
+        verifiedDonors.forEach(donor => {
+          verifiedRecipients.forEach(recipient => {
+            if (donor.bloodGroup === recipient.bloodGroup && donor.organ === recipient.organ) {
+              matches.push({ donor, recipient });
+            }
+          });
+        });
+
+        displayMatches(matches);
+        loadingMessage.style.display = 'none';
+        matchButton.disabled = false;
+      }, 20000); // Simulate a delay of 10 seconds
+    }
+
+    function displayMatches(matches) {
+  const matchResults = document.getElementById('matchResults');
+  matchResults.innerHTML = "";
+
+  if (matches.length === 0) {
+    matchResults.innerHTML = "<p>No matches found.</p>";
+  } else {
+    matches.forEach(match => {
+      matchResults.innerHTML += `
+        <div class="match-item">
+          <h4>Matched Donor & Recipient:</h4>
+          <p><strong>Donor Name:</strong> ${match.donor.name}</p>
+          <p><strong>Donor Email:</strong> ${match.donor.email} <button onclick="sendEmail('${match.donor.email}')">Send Mail</button></p>
+          <p><strong>Donor Phone:</strong> ${match.donor.phone}</p>
+          <p><strong>Donor Blood Group:</strong> ${match.donor.bloodGroup}</p>
+          <p><strong>Donor Organ:</strong> ${match.donor.organ}</p>
+          <p><strong>Recipient Name:</strong> ${match.recipient.name}</p>
+          <p><strong>Recipient Email:</strong> ${match.recipient.email} <button onclick="sendEmail('${match.recipient.email}')">Send Mail</button></p>
+          <p><strong>Recipient Phone:</strong> ${match.recipient.phone}</p>
+          <p><strong>Recipient Blood Group:</strong> ${match.recipient.bloodGroup}</p>
+          <p><strong>Recipient Organ Needed:</strong> ${match.recipient.organ}</p>
+        </div>
+      `;
+    });
+  }
+}
+
+// Function to open Gmail compose window with the pre-filled email
+function sendEmail(email) {
+  const mailtoLink = `mailto:${email}`;
+  window.location.href = mailtoLink; // Opens the default email client or Gmail
+}
+
+
+
+    function logout() {
+      // Example: clear local storage/session and redirect
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = "/index.html"; // Adjust this route as per your app
+    }
+
+    // Message functionality
+    function openMessageModal(email, role, name, event) {
+      if (event) event.stopPropagation();
+      
+      document.getElementById('recipientEmail').value = email;
+      document.getElementById('recipientRole').value = role;
+      document.getElementById('messageRecipient').textContent = `To: ${name} (${email})`;
+      document.getElementById('messageContent').value = '';
+      
+      document.getElementById('messageModal').style.display = 'block';
+    }
+
+    function closeMessageModal() {
+      document.getElementById('messageModal').style.display = 'none';
+    }
+
+    function openTab(tabName) {
+      // Hide all tab content
+      const tabContents = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove('active');
+      }
+      
+      // Remove active class from all tab buttons
+      const tabButtons = document.getElementsByClassName('tab-btn');
+      for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove('active');
+      }
+      
+      // Show the selected tab content
+      document.getElementById(tabName).classList.add('active');
+      
+      // Add active class to the clicked button
+      event.currentTarget.classList.add('active');
+
+      // If messages tab is opened, fetch and display messages
+      if (tabName === 'messages') {
+        fetchMessages();
+      }
+    }
+
+    async function fetchMessages() {
+      try {
+        // In a real app, you would fetch messages from your backend
+        // For this example, we'll simulate with some sample data
+        
+        // Simulated API call
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Sample messages data
+        allMessages = [
+          {
+            id: 1,
+            from: 'admin',
+            to: 'wasif@gmail.com',
+            userName: 'wasif',
+            userRole: 'donor',
+            content: 'Your donor application has been verified. Please check your dashboard for updates.',
+          },
+          {
+            id: 2,
+            from: 'prashanth@gmail.com',
+            to: 'admin',
+            userName: 'Prashanth',
+            userRole: 'donor',
+            content: 'Thank you for verifying my application. When can I expect a match?',
+          },
+          {
+            id: 3,
+            from: 'admin',
+            to: 'prashanth@gmail.com',
+            userName: 'Prashanth',
+            userRole: 'donor',
+            content: 'We are actively looking for matches. You will be notified as soon as we find a suitable donor.',
+          },
+          {
+            id: 4,
+            from: 'admin',
+            to: 'prashanth@gmail.com',
+            userName: 'Prashanth',
+            userRole: 'donor',
+            content: 'We are actively looking for matches. You will be notified as soon as we find a suitable donor.',
+          }
+        ];
+        
+        displayMessages();
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    }
+
+    function displayMessages() {
+      const messageList = document.getElementById('adminMessageList');
+      messageList.innerHTML = '';
+      
+      if (allMessages.length === 0) {
+        messageList.innerHTML = '<p>No messages found.</p>';
+        return;
+      }
+      
+      allMessages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      
+      allMessages.forEach(message => {
+        const messageItem = document.createElement('div');
+        messageItem.classList.add('message-item');
+        
+        const formattedDate = new Date(message.timestamp).toLocaleString();
+        
+        let header;
+        if (message.from === 'admin') {
+          header = `To: ${message.userName} (${message.to}) - ${formattedDate}`;
+        } else {
+          header = `From: ${message.userName} (${message.from}) - ${formattedDate}`;
+        }
+        
+        messageItem.innerHTML = `
+          <div class="message-header">${header}</div>
+          <div class="message-content">${message.content}</div>
+        `;
+        
+        // Add reply button for messages from users
+        if (message.from !== 'admin') {
+          const replyButton = document.createElement('button');
+          replyButton.classList.add('message-btn');
+          replyButton.style.marginTop = '10px';
+          replyButton.innerText = 'Reply';
+          replyButton.onclick = () => openMessageModal(message.from, message.userRole, message.userName);
+          messageItem.appendChild(replyButton);
+        }
+        
+        messageList.appendChild(messageItem);
+      });
+    }
+
+    // Event listeners
+    document.getElementById('messageForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const recipientEmail = document.getElementById('recipientEmail').value;
+      const recipientRole = document.getElementById('recipientRole').value;
+      const content = document.getElementById('messageContent').value;
+      
+      if (!recipientEmail || !content.trim()) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      
+      // Find user name from email
+      const userList = recipientRole === 'donor' ? allDonors : allRecipients;
+      const user = userList.find(u => u.email === recipientEmail);
+      
+      if (!user) {
+        alert('User not found.');
+        return;
+      }
+      
+      // Create a new message object
+      const newMessage = {
+        id: allMessages.length + 1, // In a real app, this would be assigned by the backend
+        from: 'admin',
+        to: recipientEmail,
+        userName: user.name,
+        userRole: recipientRole,
+        content: content,
+        timestamp: new Date().toISOString()
+      };
+      
+      // In a real app, you would send this to your backend API
+      // For this example, we'll just add it to our local array
+      allMessages.push(newMessage);
+      
+      // Close modal and display confirmation
+      closeMessageModal();
+      alert('Message sent successfully!');
+      
+      // If messages tab is active, refresh the message list
+      if (document.getElementById('messages').classList.contains('active')) {
+        displayMessages();
+      }
+    });
+
+    document.getElementById('messagesBtn').addEventListener('click', function() {
+      openTab('messages');
+      document.querySelector('.tab-btn[onclick="openTab(\'messages\')"]').classList.add('active');
+      document.querySelector('.tab-btn[onclick="openTab(\'dashboard\')"]').classList.remove('active');
+    });
+
+    // When clicking anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      const modal = document.getElementById('messageModal');
+      if (event.target == modal) {
+        closeMessageModal();
+      }
+    };
+
+    window.onload = fetchUsers;
+  </script>
+</body>
+</html>
